@@ -1,41 +1,17 @@
-DIABETES_FEATURES = [
-    "Pregnancies",
-    "Glucose",
-    "BloodPressure",
-    "SkinThickness",
-    "Insulin",
-    "BMI",
-    "DiabetesPedigreeFunction",
-    "Age"
-]
-
-HEART_FEATURES = [
-    "age","sex","cp","trestbps","chol","fbs",
-    "restecg","thalach","exang","oldpeak",
-    "slope","ca","thal"
-]
-
-PCOS_FEATURES = [
-    "Age",
-    "BMI",
-    "Menstrual_Irregularity",
-    "Testosterone_Level(ng/dL)",
-    "Antral_Follicle_Count"
-]
-
-
 def validate_input(disease, data):
-    if disease == "diabetes":
-        required = DIABETES_FEATURES
-    elif disease == "heart":
-        required = HEART_FEATURES
-    elif disease == "pcos":
-        required = PCOS_FEATURES
-    else:
-        return False, "Invalid disease type"
+    if not disease or not data:
+        return False, "Missing disease or data"
 
-    for feature in required:
-        if feature not in data:
-            return False, f"Missing feature: {feature}"
+    if not isinstance(data, dict):
+        return False, "Invalid data format"
+
+    if len(data) < 4:
+        return False, "Not enough input features"
+
+    for key, value in data.items():
+        try:
+            float(value)
+        except:
+            return False, f"Invalid value for {key}"
 
     return True, None
